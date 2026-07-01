@@ -22,7 +22,7 @@ export async function generateMindMapText(idea: string): Promise<string> {
 
 async function callGemini(idea: string): Promise<string> {
   const key = (process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY)!;
-  const model = process.env.GEMINI_MODEL || "gemini-2.0-flash";
+  const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 
   const res = await fetch(url, {
@@ -40,6 +40,11 @@ async function callGemini(idea: string): Promise<string> {
   });
 
   if (!res.ok) {
+    if (res.status === 429) {
+      throw new Error(
+        `โควตา Gemini free tier เต็ม (429) — รอสักครู่แล้วลองใหม่ หรือเปลี่ยนโมเดลด้วย GEMINI_MODEL (เช่น gemini-2.0-flash) / Gemini free-tier quota exceeded. Wait a bit or set a different GEMINI_MODEL.`
+      );
+    }
     const detail = await res.text().catch(() => "");
     throw new Error(`Gemini API error ${res.status}: ${detail.slice(0, 300)}`);
   }

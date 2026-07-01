@@ -71,7 +71,7 @@ npm run dev
 
 - **Google Gemini (free tier — แนะนำ):** ขอ API key ฟรีที่ https://aistudio.google.com/apikey
   (ไม่ต้องผูกบัตร) แล้วใส่ `GEMINI_API_KEY=...` ใน `.env.local`
-  - ค่าเริ่มต้นใช้โมเดล `gemini-2.0-flash` เปลี่ยนได้ด้วย `GEMINI_MODEL=...`
+  - ค่าเริ่มต้นใช้โมเดล `gemini-2.5-flash` เปลี่ยนได้ด้วย `GEMINI_MODEL=...`
 - **Anthropic Claude:** สมัคร https://console.anthropic.com/ (บัญชีใหม่มักได้เครดิตทดลองฟรี)
   แล้วใส่ `ANTHROPIC_API_KEY=...` — ประหยัดเครดิตด้วย `ANTHROPIC_MODEL=claude-haiku-4-5`
 - **โหมดเดโม (ไม่ต้องมี key เลย):** กดปุ่ม **🧪 เดโม** ในแอป ได้ mindmap ตัวอย่างทันที
@@ -83,7 +83,7 @@ npm run dev
 | ตัวแปร | ค่าเริ่มต้น | คำอธิบาย |
 |--------|------------|----------|
 | `GEMINI_API_KEY` | — | API key ของ Google Gemini (มี free tier) |
-| `GEMINI_MODEL` | `gemini-2.0-flash` | เปลี่ยนโมเดล Gemini |
+| `GEMINI_MODEL` | `gemini-2.5-flash` | เปลี่ยนโมเดล Gemini |
 | `ANTHROPIC_API_KEY` | — | API key ของ Anthropic (ถ้าไม่ใช้ Gemini) |
 | `ANTHROPIC_MODEL` | `claude-opus-4-8` | เปลี่ยนโมเดล Claude |
 
