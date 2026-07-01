@@ -1,12 +1,10 @@
 import { NextResponse } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
-import { MINDMAP_SYSTEM_PROMPT, extractJson } from "@/lib/prompt";
+import { extractJson } from "@/lib/prompt";
 import { isMindMapData } from "@/lib/types";
+import { activeProvider, generateMindMapText } from "@/lib/ai";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
-
-const MODEL = process.env.ANTHROPIC_MODEL || "claude-opus-4-8";
 
 export async function POST(request: Request) {
   let idea: string;
@@ -24,32 +22,20 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "ไอเดียยาวเกินไป / Idea is too long." }, { status: 400 });
   }
 
-  if (!process.env.ANTHROPIC_API_KEY) {
+  if (!activeProvider()) {
     return NextResponse.json(
       {
         error:
-          "ยังไม่ได้ตั้งค่า ANTHROPIC_API_KEY — กดปุ่ม 🧪 เดโม เพื่อลองใช้โดยไม่ต้องมี key หรือดูวิธีตั้งค่าใน README / ANTHROPIC_API_KEY is not set. Click the 🧪 Demo button to try without a key, or see the README.",
+          "ยังไม่ได้ตั้งค่า API key — ใส่ GEMINI_API_KEY (ฟรีที่ aistudio.google.com/apikey) หรือ ANTHROPIC_API_KEY ใน .env.local, หรือกดปุ่ม 🧪 เดโม เพื่อลองโดยไม่ต้องมี key / No API key set. Add GEMINI_API_KEY (free) or ANTHROPIC_API_KEY to .env.local, or click 🧪 Demo.",
       },
       { status: 500 }
     );
   }
 
-  const client = new Anthropic();
-
   try {
-    const message = await client.messages.create({
-      model: MODEL,
-      max_tokens: 4096,
-      system: MINDMAP_SYSTEM_PROMPT,
-      messages: [{ role: "user", content: `Idea: ${idea}` }],
-    });
-
-    const text = message.content
-      .filter((block): block is Anthropic.TextBlock => block.type === "text")
-      .map((block) => block.text)
-      .join("");
-
+    const text = await generateMindMapText(idea);
     const parsed = extractJson(text);
+
     if (!isMindMapData(parsed)) {
       return NextResponse.json(
         { error: "โมเดลตอบกลับมาในรูปแบบที่ไม่ถูกต้อง ลองกดสร้างใหม่อีกครั้ง / The model returned an unexpected shape. Try again." },
@@ -60,8 +46,7 @@ export async function POST(request: Request) {
     return NextResponse.json(parsed);
   } catch (err) {
     console.error("[generate] error", err);
-    const status = err instanceof Anthropic.APIError ? err.status ?? 500 : 500;
     const detail = err instanceof Error ? err.message : "Unknown error";
-    return NextResponse.json({ error: `สร้างไม่สำเร็จ / Generation failed: ${detail}` }, { status });
+    return NextResponse.json({ error: `สร้างไม่สำเร็จ / Generation failed: ${detail}` }, { status: 500 });
   }
 }

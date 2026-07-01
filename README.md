@@ -67,25 +67,32 @@ npm run dev
 
 ## 🧪 ทดสอบฟรี / Testing for free
 
-- **โหมดเดโม (ไม่ต้องมี key):** กดปุ่ม **🧪 เดโม** ได้เลย จะได้ mindmap ตัวอย่าง
-  (ถ้าพิมพ์ไอเดียไว้ก่อน ระบบจะสร้างโครงตัวอย่างจากไอเดียนั้นให้) — ใช้ดูหน้าตา/การทำงานได้ครบโดยไม่ต้องมี API key
-- **ใช้ AI จริง:** ต้องมี API key ของ Anthropic
-  - Anthropic **ไม่มี key ฟรีถาวร** แต่บัญชีใหม่มัก **ได้เครดิตทดลองฟรี** — สมัครที่ https://console.anthropic.com/ แล้วสร้าง key ที่ **Settings → API Keys**
-  - อยากประหยัดเครดิต ใช้โมเดลถูกสุด: ตั้ง `ANTHROPIC_MODEL=claude-haiku-4-5` ใน `.env.local`
+รองรับ AI 2 เจ้า — แอปจะเลือกใช้ **Gemini ก่อน** ถ้ามี `GEMINI_API_KEY` ไม่งั้นใช้ Claude
+
+- **Google Gemini (free tier — แนะนำ):** ขอ API key ฟรีที่ https://aistudio.google.com/apikey
+  (ไม่ต้องผูกบัตร) แล้วใส่ `GEMINI_API_KEY=...` ใน `.env.local`
+  - ค่าเริ่มต้นใช้โมเดล `gemini-2.0-flash` เปลี่ยนได้ด้วย `GEMINI_MODEL=...`
+- **Anthropic Claude:** สมัคร https://console.anthropic.com/ (บัญชีใหม่มักได้เครดิตทดลองฟรี)
+  แล้วใส่ `ANTHROPIC_API_KEY=...` — ประหยัดเครดิตด้วย `ANTHROPIC_MODEL=claude-haiku-4-5`
+- **โหมดเดโม (ไม่ต้องมี key เลย):** กดปุ่ม **🧪 เดโม** ในแอป ได้ mindmap ตัวอย่างทันที
 
 ### ตัวแปรแวดล้อม / Environment variables
 
-| ตัวแปร | จำเป็น | ค่าเริ่มต้น | คำอธิบาย |
-|--------|:------:|------------|----------|
-| `ANTHROPIC_API_KEY` | ✅ | — | API key ของ Anthropic |
-| `ANTHROPIC_MODEL` | — | `claude-opus-4-8` | เปลี่ยนโมเดลที่ใช้สร้าง mindmap ได้ |
+ตั้งค่าอย่างน้อย 1 provider (Gemini จะถูกใช้ก่อนถ้ามี key)
+
+| ตัวแปร | ค่าเริ่มต้น | คำอธิบาย |
+|--------|------------|----------|
+| `GEMINI_API_KEY` | — | API key ของ Google Gemini (มี free tier) |
+| `GEMINI_MODEL` | `gemini-2.0-flash` | เปลี่ยนโมเดล Gemini |
+| `ANTHROPIC_API_KEY` | — | API key ของ Anthropic (ถ้าไม่ใช้ Gemini) |
+| `ANTHROPIC_MODEL` | `claude-opus-4-8` | เปลี่ยนโมเดล Claude |
 
 ## 🛠️ เทคโนโลยี / Tech stack
 
 - **Next.js 14** (App Router) + **TypeScript**
 - **React Flow** (`@xyflow/react`) สำหรับวาด mindmap
 - **@dagrejs/dagre** สำหรับจัด layout
-- **@anthropic-ai/sdk** เชื่อมต่อ Claude
+- **Google Gemini** (REST) หรือ **@anthropic-ai/sdk** (Claude) — เลือกได้
 - **Tailwind CSS**
 
 ## 📌 หมายเหตุ / Notes
