@@ -11,9 +11,11 @@ const EXAMPLES = [
 
 export function IdeaInput({
   onGenerate,
+  onDemo,
   loading,
 }: {
   onGenerate: (idea: string) => void;
+  onDemo: (idea: string) => void;
   loading: boolean;
 }) {
   const [value, setValue] = useState("");
@@ -49,6 +51,14 @@ export function IdeaInput({
           ) : (
             <>✨ สร้าง Mindmap</>
           )}
+        </button>
+        <button
+          onClick={() => onDemo(value.trim())}
+          disabled={loading}
+          title="ดูตัวอย่างโดยไม่ต้องใช้ API key"
+          className="flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:border-indigo-300 hover:text-indigo-600 disabled:opacity-50"
+        >
+          🧪 เดโม
         </button>
       </div>
       <div className="flex flex-wrap items-center gap-1.5">

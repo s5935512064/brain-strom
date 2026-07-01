@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { MindMap } from "@/components/MindMap";
 import { IdeaInput } from "@/components/IdeaInput";
 import { isMindMapData, type MindMapData } from "@/lib/types";
+import { getDemo } from "@/lib/demo";
 
 const STORAGE_KEY = "brain-strom:last";
 
@@ -56,6 +57,17 @@ export default function Home() {
     }
   }, []);
 
+  const runDemo = useCallback((idea: string) => {
+    const demo = getDemo(idea);
+    setError(null);
+    setData(demo);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(demo));
+    } catch {
+      /* non-fatal */
+    }
+  }, []);
+
   return (
     <main className="flex h-screen flex-col">
       <header className="z-10 border-b border-slate-200 bg-white/80 px-5 py-3 backdrop-blur">
@@ -66,7 +78,7 @@ export default function Home() {
               พิมพ์ไอเดีย → AI สร้าง mindmap ให้อัตโนมัติ
             </p>
           </div>
-          <IdeaInput onGenerate={generate} loading={loading} />
+          <IdeaInput onGenerate={generate} onDemo={runDemo} loading={loading} />
           {error ? (
             <p className="rounded-md bg-red-50 px-3 py-2 text-xs text-red-600">{error}</p>
           ) : null}

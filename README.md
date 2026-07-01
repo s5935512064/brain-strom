@@ -49,13 +49,13 @@ components/MindMap.tsx (React Flow) → วาดออกมา
 
 ## 🚀 เริ่มใช้งาน / Getting started
 
-ต้องมี **Node.js 18+** และ **API key ของ Anthropic**
+ต้องมี **Node.js 18+**
 
 ```bash
 # 1. ติดตั้ง dependencies
 npm install
 
-# 2. ตั้งค่า API key
+# 2. (ไม่บังคับ) ตั้งค่า API key เพื่อให้ AI สร้างจริง
 cp .env.example .env.local
 # แล้วแก้ค่า ANTHROPIC_API_KEY=sk-ant-... ในไฟล์ .env.local
 
@@ -63,9 +63,15 @@ cp .env.example .env.local
 npm run dev
 ```
 
-เปิด http://localhost:3000 แล้วพิมพ์ไอเดียได้เลย
+เปิด http://localhost:3000
 
-ขอ API key ได้ที่ https://console.anthropic.com/
+## 🧪 ทดสอบฟรี / Testing for free
+
+- **โหมดเดโม (ไม่ต้องมี key):** กดปุ่ม **🧪 เดโม** ได้เลย จะได้ mindmap ตัวอย่าง
+  (ถ้าพิมพ์ไอเดียไว้ก่อน ระบบจะสร้างโครงตัวอย่างจากไอเดียนั้นให้) — ใช้ดูหน้าตา/การทำงานได้ครบโดยไม่ต้องมี API key
+- **ใช้ AI จริง:** ต้องมี API key ของ Anthropic
+  - Anthropic **ไม่มี key ฟรีถาวร** แต่บัญชีใหม่มัก **ได้เครดิตทดลองฟรี** — สมัครที่ https://console.anthropic.com/ แล้วสร้าง key ที่ **Settings → API Keys**
+  - อยากประหยัดเครดิต ใช้โมเดลถูกสุด: ตั้ง `ANTHROPIC_MODEL=claude-haiku-4-5` ใน `.env.local`
 
 ### ตัวแปรแวดล้อม / Environment variables
 

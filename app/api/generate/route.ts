@@ -26,7 +26,10 @@ export async function POST(request: Request) {
 
   if (!process.env.ANTHROPIC_API_KEY) {
     return NextResponse.json(
-      { error: "ยังไม่ได้ตั้งค่า ANTHROPIC_API_KEY — ดูวิธีตั้งค่าใน README / ANTHROPIC_API_KEY is not set. See README." },
+      {
+        error:
+          "ยังไม่ได้ตั้งค่า ANTHROPIC_API_KEY — กดปุ่ม 🧪 เดโม เพื่อลองใช้โดยไม่ต้องมี key หรือดูวิธีตั้งค่าใน README / ANTHROPIC_API_KEY is not set. Click the 🧪 Demo button to try without a key, or see the README.",
+      },
       { status: 500 }
     );
   }
